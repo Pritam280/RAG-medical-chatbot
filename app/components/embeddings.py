@@ -7,15 +7,15 @@ logger = get_logger(__name__)
 
 def get_embedding_model():
     try:
-        logger.info("Intializing our Huggingface embedding model")
-
+        logger.info("initializing our huggingface embedding model")
         model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-        logger.info("Huggingface embedding model loaded sucesfully....")
+        logger.info("huggingface embedding model initialized successfully")
 
         return model
     
     except Exception as e:
-        error_message=CustomException("Error occured while loading embedding model" , e)
+        error_message = CustomException("error occurred while initializing huggingface embedding model", e)
         logger.error(str(error_message))
         raise error_message
+

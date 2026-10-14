@@ -1,25 +1,24 @@
-from langchain_groq import ChatGroq
-from app.config.config import GROQ_API_KEY
+
+from langchain_ollama import ChatOllama
+from app.config.config import OLLAMA_MODEL, OLLAMA_BASE_URL
 from app.common.logger import get_logger
-from app.common.custom_exception import CustomException
 
 logger = get_logger(__name__)
 
-def load_llm(model_name: str = "llama-3.1-8b-instant", groq_api_key: str = GROQ_API_KEY):
-    try:
-        logger.info("Loading LLM from Groq using LLaMA3 model...")
 
-        llm = ChatGroq(
-            groq_api_key=groq_api_key,
-            model_name=model_name,
+def load_llm():
+    try:
+        logger.info("Loading local Ollama model: %s", OLLAMA_MODEL)
+
+        llm = ChatOllama(
+            model=OLLAMA_MODEL,
+            base_url=OLLAMA_BASE_URL,
             temperature=0.3,
-            max_tokens=256,
         )
 
-        logger.info("LLM loaded successfully from Groq.")
+        logger.info("Ollama model initialized successfully")
         return llm
 
-    except Exception as e:
-        error_message = CustomException("Failed to load an LLM from Groq", e)
-        logger.error(str(error_message))
-        return None
+    except Exception:
+        logger.exception("Failed to initialize Ollama model")
+        raise
